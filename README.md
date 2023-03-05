@@ -1,1 +1,1 @@
-# freescout_jira
+# Response Reporting for Freescout.
