@@ -1,7 +1,7 @@
 # (WIP) Response Reporting for Freescout.
 - Intuitive Response time reports for freescout.
 
-TODO:
+TODO:  
 [ ] - single user report  
 [ ] - user filters on dashboard  
 [ ] - tidy up dashboard filters  
