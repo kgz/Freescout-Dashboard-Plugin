@@ -1,1 +1,3 @@
-# Response Reporting for Freescout.
+# (WIP) Response Reporting for Freescout.
+- Intuitive Response time reports for freescout.
+
