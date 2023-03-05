@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');:global{
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'PT Sans', sans-serif;
+        font-weight: 100;
+    }
+}
+
+$heights : (
+    header : 60px,
+    small-device:500px,
+    med-device: 990px
+);
+
+@function height($key) {
+    @if map-get($map: $heights, $key: $key){
+        @return map-get($map: $heights, $key: $key);
+    }
+    @else{
+        @warn "Height #{$key} not found";
+        @return 0;
+    }    
+}
+
+
+
+$colorPallet: (
+
+    /* ====== UI COLORS ====== */
+    primary-bg: #246eb9,
+    secondary-bg: #0acaec,
+    bg: linear-gradient(180deg, #246eb9 0%, #0acaec 100%),
+
+    home-card: #d6d6d6,
+    home-card-light: #fafafa,
+    
+    /* ===== TEXT COLORS ===== */
+    text: #1d1d1d,
+    text-light: #5f5d5d,
+    text-active:rgb(151, 79, 219),
+    text-live: #e73838,
+    text-channel: rgb(214, 28, 106),
+    text-channel-light: rgb(255, 0, 98),
+    text-passed: #9c999e,
+    /* ===== DEFAULT COLORS ===== */
+    default: #2bff00,
+
+
+
+    c1: #ffffff,
+    c2:#161616,
+    c3:#313943,
+    c4:#d6d6d6,
+    c5:#4e4cd0
+
+
+
+
+);
+
+
+//function to return colors from color pallet
+//@param $key: string
+//@return string
+@function color($key) {
+    @if map-get($map: $colorPallet, $key: $key){
+        @return map-get($map: $colorPallet, $key: $key);
+    }
+    @else{
+        @error "Color #{$key} not found";
+    }    
+
+}
+
+
+:root{
+    --bs-gutter-x:
+}
