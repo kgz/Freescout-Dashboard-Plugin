@@ -50,7 +50,10 @@ class ReportsModuleController extends Controller
 	public function last_responded()
 	{
 
-		$conversations = Conversation::join('users', 'users.id', '=', 'conversations.user_id')->get();
+		$conversations = Conversation::join('users', 'users.id', '=', 'conversations.user_id')
+		->where('conversations.status', '!=', Conversation::STATUS_SPAM)
+		->where('conversations.state', '!=', 3)
+		->get();
 		// ->where('conversations.status', '!=', Conversation::STATUS_SPAM);
 
 
@@ -93,52 +96,22 @@ class ReportsModuleController extends Controller
 				'customers.first_name as customer_first_name',
 				'customers.last_name as customer_last_name',
 				'customers.id as customer_id',
+				'users.first_name as user_first_name',
+				'users.last_name as user_last_name',
 			)
 			->where('threads.created_at', '>=', Carbon::createFromTimestamp($start)->toDateTimeString())
 			->where('threads.created_at', '<=', Carbon::createFromTimestamp($end)->toDateTimeString());
 			// where threadid = 20
 			// ->where('threads.conversation_id', '=', 21)
-			// ->groupBy('threads.id')
 			// ->get();
 			
 			// var_dump($_GET);
 			if (isset($filters->customer_ids) && count($filters->customer_ids) > 0) {
 				$customer_ids = $filters->customer_ids;
-
+				
 				$messages = $messages->whereIn('customers.id', $customer_ids);
 			}
-
-
-
-
-			// $messages = Thread::join('conversations', 'conversations.id', '=', 'threads.conversation_id')
-			// ->join('users', 'users.id', '=', 'conversations.user_id')
-			// ->join('customers', 'customers.id', '=', 'conversations.customer_id')
-			// ->select(
-			// 	'*',
-			// 	'threads.type as ttype',
-			// 	'threads.created_at as tcreated_at',
-			// 	'threads.conversation_id as conversation_id',
-			// 	'customers.first_name as customer_first_name',
-			// 	'customers.last_name as customer_last_name',
-			// 	'customers.id as customer_id',
-			// )
-			// // ->where('conversations.created_at', '>=', Carbon::createFromTimestamp($start)->toDateTimeString())
-			// // ->where('conversations.created_at', '<=', Carbon::createFromTimestamp($end)->toDateTimeString())
-			// // where threadid = 20
-			// // ->where('threads.conversation_id', '=', 21)
-			// ->orderBy('conversations.created_at', 'asc')
-			// // ->groupBy('threads.id')
-			// ->get();
-
-			// type 1= from client, 2= from staff to client
-
-			// group by conversation id "id" => [array of messages]
-			// foreach conversation id
-
-
-
-
+			$messages= $messages->groupBy('threads.id');
 			$messages = $messages->get();
 			
 
@@ -183,7 +156,7 @@ class ReportsModuleController extends Controller
 						continue;
 					}
 					$message->response_at = $closest->tcreated_at;
-					$message->responder = $closest->first_name . ' ' . $closest->last_name;
+					$message->responder = $closest->user_first_name . ' ' . $closest->user_last_name;
 					$message->closest = $closest;
 					$message->closest_diff = $closest_diff;
 					// diff in hours
@@ -194,6 +167,9 @@ class ReportsModuleController extends Controller
 			$out = [];
 			// return only thread id, thread_conversation id type = 1, responder and response_at
 			foreach ($nmessages as $conversation_id => $conversation) {
+				if( !array_key_exists(1, $conversation) ) {
+					continue;
+				}
 				$messages = $conversation[1];
 				foreach ($messages as $message) {
 					if(!isset($message->response_at)) {
@@ -280,6 +256,8 @@ class ReportsModuleController extends Controller
 				'threads.created_at as tcreated_at',
 				'threads.type',
 			)
+			->where('conversations.status', '!=', Conversation::STATUS_SPAM)
+			->where('conversations.state', '!=', 3)
 			->groupBy('threads.conversation_id')
 			// limit to one of lates
 			->orderBy('threads.created_at', 'desc')

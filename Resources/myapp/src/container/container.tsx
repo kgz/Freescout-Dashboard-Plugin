@@ -50,7 +50,7 @@ const Container = () => {
         filters['start'] = start
         filters['end'] = end
         return filters;
-    }, [selectedCustomers])
+    }, [selectedCustomers, start, end])
 
     useEffect(() => {
         const controller = new AbortController()
@@ -69,7 +69,7 @@ const Container = () => {
             .catch(err => console.log(err))
 
         return () => controller.abort()
-    }, [start, end, force_update, filters])
+    }, [force_update, filters])
 
     useEffect(() => {
         const controller = new AbortController();

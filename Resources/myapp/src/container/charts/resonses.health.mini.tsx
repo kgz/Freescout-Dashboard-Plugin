@@ -13,35 +13,36 @@ const ResponseHealthMini = () => {
 
     //healths = greater then x response time in hours
     const healths: any = {
-        'perfect': 2,
+        'perfect': 0,
         'good': 4,
         'ok': 8,
-        'low': 24,
+        'low': 16,
         // 'awful' : 8,
     }
 
     const healthColors: { [key: string]: string } = {
         'perfect': '#5d90f8',
         'good': '#09a785',
-        'ok': '#fffe5f',
-        'low': '#ff8900',
+        'ok': '#ff8900',
+        'low': '#ff0000a8',
         // 'awful' : '#f05a28',
     }
 
 
-    const data2 = useMemo(() => {
+    const [data2, avg_health] = useMemo(() => {
         // calculate overall health for each conversation by calculated_duration
         // filter by selectedType
-        const dd = data.filter((item) => item.type === selectedType)
+        const dd = data.filter((item) => item.type === selectedType)//.filter((item) => item.calculated_duration > 0)
         // map to health
 
         const data3 = dd.map((item) => {
             // group by the hrealth keys
-            let type = 'low'
-            if (item.calculated_duration < healths.terrible) type = 'low'
-            if (item.calculated_duration < healths.ok) type = 'ok'
-            if (item.calculated_duration < healths.good) type = 'good'
-            if (item.calculated_duration < healths.perfect) type = 'perfect'
+            let type = null
+            if (item.calculated_duration > healths.low) type = 'low'
+            else if (item.calculated_duration > healths.ok) type = 'ok'
+            else if (item.calculated_duration > healths.good) type = 'good'
+            else type = 'perfect';
+           
 
             return {
                 type,
@@ -53,9 +54,9 @@ const ResponseHealthMini = () => {
         const data4: any = data3.reduce((acc: any, item: any) => {
             let type = item.type
             if (acc[type]) {
-                acc[type] += item.calculated_duration
+                acc[type] += 1
             } else {
-                acc[type] = item.calculated_duration
+                acc[type] = 1
             }
             return acc
         }, {})
@@ -81,45 +82,29 @@ const ResponseHealthMini = () => {
             return healths[a.type] - healths[b.type]
         })
 
-        return data6
+        // get highest amount by count
+        const totals = data6.reduce((acc: any, item: any) => {
+            if (acc.count < item.value) {
+                acc.count = item.value
+                acc.type = item.type
+            }
+            return acc
+        }, { count: 0, type: null })
+
+        // get the health with the most responses
+        console.log('total', totals) 
+
+        const data7 = {
+            type: totals.type || '',
+            color: healthColors[totals.type] || ''
+        }
+        console.log('d7', data7)
+
+        return [data6, data7] 
 
     }, [data, start, end])
 
-    const avg_health = useMemo(() => {
-        // return health witht he omst responses
-        // filter by business hours
-        const dd = data.filter((item) => item.type === selectedType)
-        // filter out 0 values
-        const data3 = dd.filter((item) => item.calculated_duration > 0)
-        // filter by selectedType
-        const data4 = data3.filter((item) => item.type === selectedType)
-        // get the average response time
-        console.log('data4', data4)
-
-        const avg_response_time = data4.reduce((acc: any, item: any) => {
-            return acc + item.calculated_duration
-        }, 0) / data4.length
-        // get the health with the most responses
-        console.log('avg_response_time', avg_response_time)
-        // get the response time for each health
-        let typee = null;
-        if (avg_response_time < healths.perfect) typee = 'perfect'
-        if (avg_response_time < healths.good) typee = 'good'
-        if (avg_response_time < healths.bad) typee = 'ok'
-        if (avg_response_time < healths.terrible) typee = 'low'
-
-        if (!typee) typee = 'low'
-
-
-        return {
-            type: typee,
-            color: healthColors[typee]
-
-        }
-
-
-    }, [data])
-
+   
 
 
     const config = {
@@ -149,9 +134,11 @@ const ResponseHealthMini = () => {
             // offset: '-30%',
             content: (args: any) => {
                 // return actual number
-                return args.percent * 100 + '%'
+                return Math.round(args.percent*100) + '%'
             }
         },
+
+
         interactions: [
             {
                 type: 'element-active',

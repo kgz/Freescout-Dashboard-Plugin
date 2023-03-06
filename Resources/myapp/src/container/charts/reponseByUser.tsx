@@ -1,8 +1,8 @@
 import { Bar, Line } from "@ant-design/charts"
-import { useContext, useMemo } from "react"
+import { useContext, useEffect, useMemo } from "react"
 import { reponse_context } from "../container"
 
-
+declare var $: any
 const ResponseByUser = () => {
     const ctx = useContext(reponse_context)
     const {data} = ctx
@@ -63,9 +63,26 @@ const ResponseByUser = () => {
 
     }, [data])
         
-
+    useEffect(() => {
+        $("#Response_user").find('#-axis-line').parent().find('[id*="-axis-label-"]').each((i: any, item: any) => {
+            const text = $(item).text()
+            const text2 = text.split(' ')[0]
+            $(item).text(text2).css({
+                'font-size': '12px',
+                'font-weight': 'bold',
+                // link color
+                'fill': '#1383ab',
+                cursor: 'pointer',
+            })
+            .on('click', () => {
+                console.log('clicked')
+            }
+            )
+        })
+    }, [data2])
 
     const config = {
+        renderer: 'svg' as "svg" | "canvas" | undefined,
         data: data2,
         isGroup: true,
         xField: 'value',
@@ -78,12 +95,23 @@ const ResponseByUser = () => {
         // color: ['#1383ab', '#c52125'],
         seriesField: 'type',
         marginRatio: 0,
+        // on y axis item click
        
+        // custom y axis label
+        yAxis: {
+            label: {
+                formatter: (text: any) => {
+                    return text
+                },
+            },
+        },
       };
 
     return (
+        <div id="Response_user">
 
-        <Bar {...config} />
+            <Bar {...config} />
+        </div>
 
     )
 

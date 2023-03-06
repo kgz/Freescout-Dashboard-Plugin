@@ -10,6 +10,7 @@ TODO:
 [ ] - add notification if response pending is greater then x  
 [ ] - setting to change if only admins can see.  
 [ ] - settings to change health values.  
+[ ] - Response health key -> add keys for the actualy resposse times. 
 
 Future:  
 [ ] - bookmarks module?  

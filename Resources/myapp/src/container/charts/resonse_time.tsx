@@ -40,7 +40,7 @@ const ResponseTimeMini = () => {
                 return item.conversation_created_at_timestamp > day.getTime()
                     && item.conversation_created_at_timestamp < day_end.getTime()
                     && item.type === selectedType
-            })
+            }).filter((item) => item.calculated_duration > 0)
             // add all calculated_duration
             const total = filtered_data.reduce((acc, item) => {
                 return acc + item.calculated_duration

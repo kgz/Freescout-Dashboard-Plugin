@@ -14,6 +14,7 @@ const OutsandindCard = () => {
         const pad = 5 - (openTickets.length % 5); 
         console.log('op', openTickets)
         const padded_data = [...openTickets];
+        if (pad === 5) return padded_data;
         for (let i = 0; i < pad; i++) {
             padded_data.push({
                 conversation_id : null,
@@ -47,9 +48,12 @@ const OutsandindCard = () => {
                 columns={columns}
                 pagination={{
                     pageSize: 5,
+                    hideOnSinglePage: true,
+                    showSizeChanger: false,
                 }}
-                scroll={{ y: 250 }}
+                // scroll={{ y: 250 }}
                 size="small"
+                // fixed columns
                 
             />
 
