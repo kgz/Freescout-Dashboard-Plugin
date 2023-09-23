@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
+
+
+$heights : (
+    header : 60px,
+    small-device:500px,
+    med-device: 990px
+);
+
+@function height($key) {
+    @if map-get($map: $heights, $key: $key){
+        @return map-get($map: $heights, $key: $key);
+    }
+    @else{
+        @warn "Height #{$key} not found";
+        @return 0;
+    }    
+}
+
+
+
+$colorPallet: (
+
+    /* ====== UI COLORS ====== */
+    success: #7ec18b,
+    danger: #dd736d,
+    warning: #e5b972,
+    secondarybg: #f6f6f7,
+    textTitle: rgb(57, 73, 86),
+    /* ===== DEFAULT COLORS ===== */
+    default: #2bff00
+);
+
+
+//function to return colors from color pallet
+//@param $key: string
+//@return string
+@function color($key) {
+    @if map-get($map: $colorPallet, $key: $key){
+        @return map-get($map: $colorPallet, $key: $key);
+    }
+    @else{
+        @error "Color #{$key} not found";
+    }    
+
+}
+
+
+:root{
+    --bs-gutter-x:
+
+
+
+}

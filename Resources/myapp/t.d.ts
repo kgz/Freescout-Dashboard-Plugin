@@ -1,3 +1,0 @@
-// scss
-
-declare module '*.scss';
