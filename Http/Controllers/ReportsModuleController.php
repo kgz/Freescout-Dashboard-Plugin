@@ -325,9 +325,6 @@ class ReportsModuleController extends Controller
 
     public function closed_responses()
     {
-        /** @var \Illuminate\Database\Eloquent\Model $thread */
-        $thread = new Thread();
-     
         // get threads, group by conversation id, get last reply, if ttpe = 1 customer is waiting, if type = 2 agent is waiting
         $threads = Thread::join('conversations', 'conversations.id', '=', 'threads.conversation_id')
             ->leftJoin('customers', 'customers.id', '=', 'conversations.customer_id')
@@ -363,7 +360,6 @@ class ReportsModuleController extends Controller
             ->limit(10);
 
         $threads = $threads->get();
-        // calculate wait time for each conversation based on last_reply
         foreach ($threads as $conversation) {
             $conversation->wait_time = $conversation->created_at->diffInHours($conversation->closed_at);
         }
