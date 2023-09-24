@@ -2,6 +2,7 @@ export type Styles = {
   card: string;
   cardBody: string;
   cardTitle: string;
+  grid: string;
   main: string;
 };
 

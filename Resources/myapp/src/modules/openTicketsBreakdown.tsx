@@ -1,27 +1,14 @@
-import colors from "../@styles/_root.module.scss"
-import "../@styles/index.module.scss"
-import { Empty, Spin, Table } from 'antd';
-import { RootState, useAppSelector } from '../@stores/MyStore';
-import { State } from '../@types/storeState';
-import { IOpenTickets } from "../@types/open_tickets";
-
-//MRT Imports
-//import MaterialReactTable from 'material-react-table'; //default import deprecated
-import { MRT_ColumnDef, MaterialReactTable } from 'material-react-table';
-
-//Material UI Imports
-import { Box, Button, ListItemIcon, MenuItem, Typography } from '@mui/material';
-
-//Date Picker Imports
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-//Icons Imports
-import { AccountCircle, Send } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
+import { Empty, Spin } from 'antd';
+import { MaterialReactTable, MRT_ColumnDef } from 'material-react-table';
 import { useMemo } from "react";
 
+import { RootState, useAppSelector } from '../@stores/MyStore';
+import colors from "../@styles/_root.module.scss"
+import { IOpenTickets } from "../@types/open_tickets";
+import { State } from '../@types/storeState';
 
+import "../@styles/index.module.scss"
 
 const OpenTicketsBreakdown = () => {
     const openTickets = useAppSelector((state: RootState) => state.openTickets as State<IOpenTickets[]>)
@@ -31,9 +18,7 @@ const OpenTicketsBreakdown = () => {
         // sort by wait time
         temp.sort((a, b) => {
             return b.wait_time - a.wait_time
-        }
-        )
-
+        })
         return temp
     }, [openTickets.data])
 
@@ -41,7 +26,7 @@ const OpenTicketsBreakdown = () => {
         [
             {
                 header: 'State',
-                id: 'wait_time',
+                id: 'conversation_id',
                 Cell: ({ row }) => (
                     <Box
                         sx={{
@@ -54,7 +39,7 @@ const OpenTicketsBreakdown = () => {
                     />
                 ),
 
-                Header : ({ column }) => (
+                Header : () => (
                     <span style={{ width:10, fontWeight: 700, marginInline:'auto' }}>State</span>
                 ),
                 size: 2,
@@ -66,7 +51,7 @@ const OpenTicketsBreakdown = () => {
             },
             {
                 header: 'Contact',
-                Cell: ({ row }) => (<p>{row.original.customer_first_name + ' ' + row.original.customer_last_name}</p>),
+                Cell: ({ row }) => (<p>{(row.original.customer_first_name ?? '') + ' ' + (row.original.customer_last_name ?? '')}</p>),
             },
             {
                 header: 'Wait Time',
@@ -110,10 +95,9 @@ const OpenTicketsBreakdown = () => {
         <div style={{
             fontWeight: 500,
             position: 'relative',
-            width: '100%',
+            width: '99%',
             // height: '800px',
             // overflow: 'auto',
-            padding: 10,
             // marginTop: -30
             borderRadius: 3,
 
@@ -161,14 +145,13 @@ const OpenTicketsBreakdown = () => {
                         enableRowSelection={false}
                         muiTableBodyRowProps={({ row }) => {
                             return {
-                                onClick: (event) => {
-                                    console.log(row)
+                                onClick: () => {
                                     window.open('/conversation/' + row.original.conversation_id, '_blank')
                                 }
                             }
 
                         }}
-                        renderTopToolbarCustomActions={({ table }) => (
+                        renderTopToolbarCustomActions={() => (
                             <Typography
                                 fontSize={14}
                                 fontWeight={700}
@@ -182,7 +165,7 @@ const OpenTicketsBreakdown = () => {
                                     lineHeight: '31px',
                                     height: '100%',
                                 }}>
-                                Open Tickets Waiting Response
+                                Active Tickets
                             </Typography>
                         )}
 
@@ -190,15 +173,17 @@ const OpenTicketsBreakdown = () => {
                             // add a div wrapper around the top toolbar
                             className: 'test',
                             style: {
-                                width: '99%',
+                                // width: '99%',
                                 margin: '0 auto',
                                 background: colors.secondarybg,
                                 fontWeight: 'bold',
                                 fontSize: 14,
-                                paddingBlock: 10,
+                                // paddingBlock: 10,
                                 marginBottom: 10,
-                                top: 5,
+                                // top: 5,
                                 borderRadius: 3,
+                                border: '1px solid #b4b2b247'
+
                             }
                         }}
 

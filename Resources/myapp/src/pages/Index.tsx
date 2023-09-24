@@ -1,13 +1,13 @@
+import pLimit from "p-limit"
 import { useEffect } from "react"
-import { RootState, resetOpenTickets, resetResponseTimes, setOpenTickets, setOpenTicketsLoading, setResponseTimes, setResponseTimesLoading, useAppDispatch, useAppSelector } from "../@stores/MyStore"
+import { useMediaQuery } from "react-responsive";
+
+import { resetOpenTickets, resetResponseTimes, RootState, setClosedTickets, setClosedTicketsLoading, setOpenTickets, setOpenTicketsLoading, setResponseTimes, setResponseTimesLoading, useAppDispatch, useAppSelector } from "../@stores/MyStore"
 import style from "../@styles/index.module.scss"
 import { ISelectedDates } from "../@types/stores"
 import { State } from "../@types/storeState"
-import ResponseTimes from "../graphs/responseTimes"
-import pLimit from "p-limit"
-import OpenTicketsOverview from "../graphs/openTicketOverview"
-import OpenTicketsBreakdown from "../graphs/openTicketsBreakdown"
-
+import { Masonry } from "../compoments/Grid";
+import { Modules } from "../compoments/modules";
 
 const Index = () => {
     const useSelectedDates = useAppSelector((state: RootState) => state.selectedDates as State<ISelectedDates>)
@@ -53,7 +53,6 @@ const Index = () => {
                 const urls = Array.from(Array(pages).keys())
                 const input = urls.map((url) => limit2(() => fetchResponseTimes(url + 1)))
                 Promise.all(input).then(() => {
-                    console.log('Done')
                     dispatch(setResponseTimesLoading(false))
                 })
 
@@ -103,7 +102,6 @@ const Index = () => {
                 const urls = Array.from(Array(pages).keys())
                 const input = urls.map((url) => limit2(() => fetchResponseTimes(url + 1)))
                 Promise.all(input).then(() => {
-                    console.log('Done')
                     dispatch(setOpenTicketsLoading(false))
                 })
 
@@ -114,27 +112,75 @@ const Index = () => {
         }
     }, [useSelectedDates.data.startDate, useSelectedDates.data.endDate, dispatch])
 
+    useEffect(() => {
+        dispatch(setClosedTicketsLoading(true))
+        const controller = new AbortController()
+        const signal = controller.signal
+        fetch('http://freescout.example.com/responses/api/closed_responses', {
+            method: 'GET',
+            signal: signal,
+        })
+            .then(response => response.json())
+            .then(data => {
+                dispatch(setClosedTicketsLoading(false))
+                dispatch(setClosedTickets(data))
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return () => {
+            controller.abort()
+        }
+    }, [dispatch])
 
+    const isbigbigDesktop = useMediaQuery({ query: "(min-width: 1600px)" });
+    const isBigDesktop = useMediaQuery({ query: "(min-width: 1200px) and (max-width: 1599.98px)" });
+    const isSmallDesktop = useMediaQuery({
+        query: "(min-width: 992px) and (max-width: 1199.98px)"
+    });
+    const isTablet = useMediaQuery({
+        query: "(min-width: 500px) and (max-width: 991.98px)"
+    });
+    const isMobile = useMediaQuery({ query: "(max-width: 499.98px)" });
+
+    const columns = () => {
+        if (isbigbigDesktop) {
+            return 100;
+        }
+        if (isBigDesktop) {
+            return 80;
+        }
+
+        if (isSmallDesktop) {
+            return 50;
+        }
+
+        if (isTablet) {
+            return 40;
+        }
+
+        if (isMobile) {
+            return 10;
+        }
+        return 1;
+    };
 
     return (
         <div className={style.main}>
-            <div className={style.card} style={{ width: 350 }}>
-                <div className={style.cardTitle}>Response Time By Responder (days)</div>
-                <div className={style.cardBody}>
-                    <ResponseTimes />
-                </div>
-            </div>
-            <div className={style.card} style={{ width: 350 }}>
-                <div className={style.cardTitle}>Waiting Response Overview</div>
-                    <OpenTicketsOverview />
-            </div>
-            <div className={'asd'}>
-                {/* <div className={style.cardTitle}>Waiting Response</div> */}
-                {/* <div className={style.cardBody}> */} 
-                <OpenTicketsBreakdown />
-                {/* </div> */}
-            </div>
-         </div>
+            <Masonry columns={columns()} items={
+                [...Modules.map((module) => {
+                    // wrap the module.item in a div with the correct size
+                    return {
+                        ...module,
+                        item: (
+                            <span className="asdasd">
+                                {module.item}
+                            </span>
+                        )
+                    }
+                })]
+            } />
+        </div>
     )
 }
 

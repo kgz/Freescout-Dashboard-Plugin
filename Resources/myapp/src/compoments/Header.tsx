@@ -26,7 +26,6 @@ const Header = () => {
                 format={"DD/MM/YYYY"}
                 onChange={(dates) => {
                     if (dates) {
-                        console.log(dates)
                         dispatch(setSelectedDates({ startDate: dates[0]?.startOf("day").unix(), endDate: dates[1]?.endOf("day").unix() }))
                     }
                 }}

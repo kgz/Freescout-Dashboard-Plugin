@@ -69,9 +69,6 @@ class ReportsModuleController extends Controller
         return Response::json($conversations);
     }
 
-
-
-
     public function response_times()
     {
         $filters = (object)json_decode($_GET['filters'] ?? '{}');
@@ -244,8 +241,6 @@ class ReportsModuleController extends Controller
             }
             unset($conversation);
         }
-
-
         $ret = [
             'data' => $out,
             'page' => 1,
@@ -326,19 +321,54 @@ class ReportsModuleController extends Controller
             $conversation->wait_time = $conversation->created_at->diffInHours(Carbon::now());
         }
         return Response::json($threads);
-
-        // // filterout conversations that are not waiting for a response
-        // $threads = $threads->filter(function ($conversation) {
-        //     return $conversation->status == 1;
-        // // });
-        // // to array
-        // $threads = $threads->toArray();
-        // // to actual array without numbers
-        // $threads = array_values($threads);
-
-        return Response::json($threads);
     }
 
+    public function closed_responses()
+    {
+        /** @var \Illuminate\Database\Eloquent\Model $thread */
+        $thread = new Thread();
+     
+        // get threads, group by conversation id, get last reply, if ttpe = 1 customer is waiting, if type = 2 agent is waiting
+        $threads = Thread::join('conversations', 'conversations.id', '=', 'threads.conversation_id')
+            ->leftJoin('customers', 'customers.id', '=', 'conversations.customer_id')
+            ->leftJoin('users', 'users.id', '=', 'conversations.user_id')
+            ->rightJoin('users AS closed_user', 'closed_user.id', '=', 'conversations.closed_by_user_id')
+            ->distinct('threads.conversation_id')
+            ->select(
+                'conversations.id as conversation_id',
+                'conversations.created_at',
+                'conversations.closed_at',
+                'conversations.customer_id',
+                'customers.company',
+                'customers.first_name as customer_first_name',
+                'customers.last_name as customer_last_name',
+                'users.first_name',
+                'users.last_name',
+                'users.id as user_id',
+                'conversations.last_reply_at',
+                'conversations.status',
+                'threads.created_at as tcreated_at',
+                'threads.type',
+                'closed_user.first_name as closed_user_first_name',
+                'closed_user.last_name as closed_user_last_name',
+            )
+            // ->where('conversations.status', '!=', Conversation::STATUS_SPAM)
+            // ->where('conversations.state', '!=', 3)
+            // ->whereRaw('(`threads`.status < 3 AND `threads`.status = `conversations`.`status`)')
+            // ->where('conversations.closed_at', '<=',  $end->toDateTimeString())
+            ->groupBy('threads.conversation_id')
+            // limit to one of lates
+            ->orderBy('conversations.closed_at', 'desc')
+            // only get first 10
+            ->limit(10);
+
+        $threads = $threads->get();
+        // calculate wait time for each conversation based on last_reply
+        foreach ($threads as $conversation) {
+            $conversation->wait_time = $conversation->created_at->diffInHours($conversation->closed_at);
+        }
+        return Response::json($threads);
+    }
     public function getCustomers()
     {
         $customers = Customer::all();

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import colors from "../@styles/_root.module.scss"
 import "../@styles/index.module.scss"
 import { Empty, Spin } from 'antd';
@@ -55,10 +55,6 @@ const OpenTicketsOverview = () => {
 
         return outData
     }, [openTickets.data])
-
-    useEffect(() => {
-        console.log(openTickets)
-    }, [openTickets])
 
     return (
         <div style={{

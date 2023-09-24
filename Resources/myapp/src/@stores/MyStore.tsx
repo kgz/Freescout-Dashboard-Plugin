@@ -8,6 +8,8 @@ import { ISelectedDates } from '../@types/stores';
 import dayjs from 'dayjs';
 import { IDataEntity } from '../@types/response_times';
 import { IOpenTickets } from '../@types/open_tickets';
+import { IClosedTickets } from 'src/@types/closed_tickets';
+import { Tmodule } from '../@types/module';
 
 export const state: StoreState = {
 	selectedDates: newStoreState<ISelectedDates>(0, {
@@ -16,6 +18,8 @@ export const state: StoreState = {
     }),
     responseTimes: newStoreState<IDataEntity[]>(0, []),
     openTickets: newStoreState<IOpenTickets[]>(0, []),
+    lastClosedTickets: newStoreState<IClosedTickets[]>(0, []),
+    selectedModules: newStoreState<Tmodule[]>(0, []),
 }
 
 const UserStore = createSlice({
@@ -23,7 +27,6 @@ const UserStore = createSlice({
 	initialState: state,
 	reducers: {
 		setSelectedDates: (state, data) => {
-            console.log(data.payload)
             state.selectedDates.data.startDate = data.payload.startDate
             state.selectedDates.data.endDate = data.payload.endDate
         },
@@ -44,8 +47,13 @@ const UserStore = createSlice({
         },
         setOpenTicketsLoading: (state, data) => {
             state.openTickets.loading = data.payload
-        }
-
+        },
+        setClosedTickets: (state, data) => {
+            state.lastClosedTickets.data = data.payload
+        },
+        setClosedTicketsLoading: (state, data) => {
+            state.lastClosedTickets.loading = data.payload
+        },
 
 
 	}
@@ -60,6 +68,8 @@ export const {
     setOpenTickets,
     resetOpenTickets,
     setOpenTicketsLoading,
+    setClosedTickets,
+    setClosedTicketsLoading,
 } = UserStore.actions;
 
 const store = configureStore({
@@ -72,7 +82,6 @@ store.subscribe(() => {
     // const selectedUsers = store.getState().selectedUsers.data
     // localStorage.setItem("selectedUsers", JSON.stringify(selectedUsers))
 
-    console.log(store.getState().selectedDates.data)
 })
 
 // export type RootState = ReturnType<typeof store.getState>

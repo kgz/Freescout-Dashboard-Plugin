@@ -5,6 +5,8 @@ export interface State<T> {
         data: T;
 }
 export interface StoreState {
+    // @ts-ignore @typescript-eslint/no-explicit-any
+    // @eslint-ignore @typescript-eslint/no-explicit-any
     [key: string]: State<any>;
 }
 

@@ -18,7 +18,6 @@ const outputConfig = {
 // https://vitejs.dev/config/
 export default ({ mode }) => {
     const env = loadEnv(mode, process.cwd())
-    console.log(env)
     const outputs = [env.VITE_OUTPUT_DIR]
 
     return defineConfig({

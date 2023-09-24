@@ -1,13 +1,13 @@
+import { Empty, Spin } from 'antd';
 import Progress from "antd/es/progress/progress";
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
+import { IDataEntity } from 'src/@types/response_times';
+
+import { RootState, useAppSelector } from '../@stores/MyStore';
+import colors from "../@styles/_root.module.scss"
+import { State } from '../@types/storeState';
 
 import "../@styles/index.module.scss"
-import { Empty, Spin } from 'antd';
-import { RootState, useAppSelector } from '../@stores/MyStore';
-import { State } from '../@types/storeState';
-import { IDataEntity } from 'src/@types/response_times';
-import colors from "../@styles/_root.module.scss"
-
 
 const ResponseTimes = () => {
     const useResponseTimes = useAppSelector((state: RootState) => state.responseTimes as State<IDataEntity[]>)
@@ -52,10 +52,6 @@ const ResponseTimes = () => {
 
         return responders
     }, [useResponseTimes.data])
-
-    useEffect(() => {
-        console.log(useResponseTimes)
-    }, [useResponseTimes])
 
     return (
         <div style ={{

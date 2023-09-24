@@ -8,4 +8,5 @@ Route::group( [ 'middleware' => 'web', 'prefix' => Helper::getSubdirectory(), 'n
 	Route::get( '/responses/api/response_times1', [ 'uses' => 'ReportsModuleController@response_times1' ] )->name( 'routes.external' );
 	Route::get( '/responses/api/outstanding_resposes', [ 'uses' => 'ReportsModuleController@outstanding_resposes' ] )->name( 'routes.external' );
 	Route::get( '/responses/api/customers', [ 'uses' => 'ReportsModuleController@getcustomers' ] )->name( 'routes.external' );
+	Route::get( '/responses/api/closed_responses', [ 'uses' => 'ReportsModuleController@closed_responses' ] )->name( 'routes.external' );
 } );
