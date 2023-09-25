@@ -20,6 +20,7 @@ const MasonryItem = styled.div<{ rows?: number; columns?: number }>`
   grid-column: span ${(p) => p.columns || 1};
   grid-row: span ${(p) => p.rows || 1};
   position: relative;
+  max-width:${(p) =>(p?.columns ?? 1)*20}px;
   `;
 //   padding-top: calc(100% * (${(p) => (p.rows || 1) / (p.columns || 1)}));
 
@@ -31,11 +32,18 @@ const MasonryItemContent = styled.div`
 export const Masonry: React.FC<{
   columns: number;
   items: IMasonryItemProps[];
-}> = ({ items, columns }) => {
+  style?: React.CSSProperties;
+}> = ({ items, columns, style }) => {
   return (
-    <MasonryGrid columns={columns}>
+    <MasonryGrid columns={columns} style={
+        columns <= 30 ? {
+            display: 'flex',
+            flexWrap: 'nowrap',
+            flexDirection: 'column',
+            justifyContent: 'center',
+    } : {}}>
       {items.map((item) => (
-        <MasonryItem key={item.id} rows={item.rows} columns={item.columns}>
+        <MasonryItem key={item.id} rows={item.rows} columns={item.columns} style={style}>
           <MasonryItemContent>{item.item}</MasonryItemContent>
         </MasonryItem>
       ))}

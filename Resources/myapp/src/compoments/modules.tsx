@@ -83,8 +83,7 @@ export const Modules: Tmodule[] = [
         rows: 3,
         columns: 29,
         item: (
-            <div className={style.card} style={{
-            }}>
+            <div className={style.card}>
                 <PendingTicketsBreakdown />
             </div>
         )
