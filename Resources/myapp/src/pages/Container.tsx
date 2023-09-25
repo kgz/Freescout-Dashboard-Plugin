@@ -7,7 +7,6 @@ import Index from './Index'
 const Container = () => {
     return (
         <BrowserRouter basename='/responses'>
-            <Header />
             <Routes>
                 <Route path="/" element={<Dashboard/>}/>
                 <Route path="/dashboard/:dashboardId" element={<Index/>}/>

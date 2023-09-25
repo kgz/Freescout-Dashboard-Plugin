@@ -15,8 +15,6 @@ import { Box, Typography } from '@mui/material';
 //Icons Imports
 import { useMemo } from "react";
 
-
-
 const PendingTicketsBreakdown = () => {
     const openTickets = useAppSelector((state: RootState) => state.openTickets as State<IOpenTickets[]>)
 
@@ -65,7 +63,6 @@ const PendingTicketsBreakdown = () => {
                 header: 'Wait Time',
                 id: 'wait_time',
                 Cell: ({ row }) => {
-
                     // pretty print the wait time, its currently in hours
                     const days = row.original.wait_time / 24;
                     // if its less than 1 day, show hours
@@ -91,9 +88,8 @@ const PendingTicketsBreakdown = () => {
                     return <>{days} days</>
                 },
             },
-
             {
-                header: 'Assigned',
+                header: 'Assignee',
                 getGroupingValue: (row) => row.first_name + ' ' + row.last_name,
                 id: 'responder',
                 Cell: ({ row }) => (<p>{row.original.first_name + ' ' + row.original.last_name}</p>),
@@ -103,12 +99,7 @@ const PendingTicketsBreakdown = () => {
         <div style={{
             fontWeight: 500,
             position: 'relative',
-            width: '99%',
-            // height: '800px',
-            // overflow: 'auto',
-            // marginTop: -30
             borderRadius: 3,
-
         }}>
             {openTickets.loading &&
                 <div style={{
@@ -118,37 +109,28 @@ const PendingTicketsBreakdown = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-
                 }}>
                     <Spin />
                 </div>
             }
-
             {!openTickets.loading && (openTickets.data.length < 1) &&
                 <Empty style={{ marginTop: '40%' }} description={<>No Data Found.</>} image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
             {!openTickets.loading && openTickets.data.length > 0 && (
-
                 <div style={{
-                    // display: 'flex',
-                    // height: '100%',
                     paddingBottom: 10,
                     width: 'fit-content',
                 }}>
-
                     <MaterialReactTable
                         columns={columns}
                         data={filtered}
                         enableColumnFilterModes
                         enableColumnOrdering
-                        // enableGrouping
                         enableRowActions={false}
                         initialState={{ showColumnFilters: true, density: 'compact', sorting: [{ id: 'wait_time', desc: true }] }}
                         positionToolbarAlertBanner="bottom"
                         enableDensityToggle={false}
                         enableSorting={true}
-
-                        // disable actions
                         enableSelectAll={false}
                         enableRowSelection={false}
                         muiTableBodyRowProps={({ row }) => {
@@ -157,7 +139,6 @@ const PendingTicketsBreakdown = () => {
                                     window.open('/conversation/' + row.original.conversation_id, '_blank')
                                 }
                             }
-
                         }}
                         renderTopToolbarCustomActions={() => (
                             <Typography
@@ -176,29 +157,18 @@ const PendingTicketsBreakdown = () => {
                                 Pending Tickets
                             </Typography>
                         )}
-
                         muiTopToolbarProps={{
-                            // add a div wrapper around the top toolbar
                             className: 'test',
                             style: {
-                                // width: '99%',
                                 margin: '0 auto',
                                 background: colors.secondarybg,
                                 fontWeight: 'bold',
                                 fontSize: 14,
-                                // paddingBlock: 10,
                                 marginBottom: 10,
-                                // top: 5,
                                 borderRadius: 3,
                                 border: '1px solid #b4b2b247'
-
                             }
                         }}
-
-                        // renderDetailPanel={({ table }) => [
-                        //     <>asdasd</>
-                        // ]}
-
                         muiTableProps={{
                             sx: {
                                 '& .MuiTableHead-root': {
@@ -243,20 +213,14 @@ const PendingTicketsBreakdown = () => {
                             sx: {
                                 '& .MuiToolbar-root': {
                                     position: 'sticky',
-                                    // backgroundColor: colors.secondarybg,
                                     top: 0,
-                                   
                                 },
                                 '& *': {
                                     fontSize: 12,
                                     fontWeight: 500,
                                 },
                                 '& .MuiBox-root ': {
-                                    // position: 'sticky',
-                                    // backgroundColor: 'pink',
                                     position: 'sticky',
-                                    // top: 0,
-                                    // height: 400,
                                 },
                             }
                         }}
@@ -267,12 +231,7 @@ const PendingTicketsBreakdown = () => {
                             }
                         }}
                     />
-
-
                 </div>
-
-
-
             )}
 
         </div>

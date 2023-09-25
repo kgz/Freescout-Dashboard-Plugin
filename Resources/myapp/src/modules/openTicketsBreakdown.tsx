@@ -85,7 +85,7 @@ const OpenTicketsBreakdown = () => {
             },
 
             {
-                header: 'Assigned',
+                header: 'Assignee',
                 getGroupingValue: (row) => row.first_name + ' ' + row.last_name,
                 id: 'responder',
                 Cell: ({ row }) => (<p>{row.original.first_name + ' ' + row.original.last_name}</p>),
@@ -95,10 +95,6 @@ const OpenTicketsBreakdown = () => {
         <div style={{
             fontWeight: 500,
             position: 'relative',
-            width: '99%',
-            // height: '800px',
-            // overflow: 'auto',
-            // marginTop: -30
             borderRadius: 3,
 
         }}>
@@ -122,8 +118,6 @@ const OpenTicketsBreakdown = () => {
             {!openTickets.loading && openTickets.data.length > 0 && (
 
                 <div style={{
-                    // display: 'flex',
-                    // height: '100%',
                     paddingBottom: 10,
                     width: 'fit-content',
                 }}>

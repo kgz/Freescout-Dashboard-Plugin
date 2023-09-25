@@ -1,5 +1,6 @@
 export type Styles = {
   active: string;
+  header: string;
   link: string;
   main: string;
 };
