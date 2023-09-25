@@ -18,15 +18,16 @@ class CreateDashboardsTable extends Migration
         // They allow to figure out that there is a record in customer_channel table.
         Schema::create('dashboards', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->jsonb('elements');
             $table->boolean('enabled');
             $table->boolean('deleted');
             $table->dateTime('created_at');
-            $table->dateTime('updated_at');
-            $table->dateTime('deleted_at');
+            $table->dateTime('updated_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->unsignedInteger('created_by');
-            $table->unsignedInteger('updated_by');
-            $table->unsignedInteger('deleted_by');
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
         });
     }
 

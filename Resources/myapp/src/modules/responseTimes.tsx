@@ -104,8 +104,8 @@ const ResponseTimes = () => {
                      
                         // name Min Avg Max
                         return (
-                            <tr key={key}>
-                                <td>{key}</td>
+                            <tr key={key} style={{fontSize:14}}>
+                                <td style={{height:25}}>{key}</td>
                                 <td>{
                                     min > 10 ? Math.round(min) 
                                     : Math.ceil(min * 10 ) / 10

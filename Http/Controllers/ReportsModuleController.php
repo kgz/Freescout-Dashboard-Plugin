@@ -6,7 +6,6 @@ use App\Conversation;
 use App\Customer;
 use App\SendLog;
 use Carbon\Carbon;
-
 use App\Thread;
 use App\User;
 use DateTime;
@@ -22,6 +21,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\View\View;
 use Modules\FlowJiraModule\Entities\Calls;
 use Modules\FlowJiraModule\Entities\Settings;
+use Modules\ReportsModule\Database\Dashboards;
 
 class ReportsModuleController extends Controller
 {
@@ -365,6 +365,108 @@ class ReportsModuleController extends Controller
         }
         return Response::json($threads);
     }
+    public function create_dashboard()
+    {
+        $data = \json_decode(file_get_contents('php://input'));
+        if (!isset($data->name)) {
+            return Response::json([
+                'error' => 'name is required',
+            ], 400);
+        }
+
+        $dashboard = new Dashboards();
+        $dashboard->create([
+            'name' => $data->name,
+            'elements' => json_encode($data->elements ?? []),
+            'enabled' => true,
+            'deleted' => false,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'deleted_at' => null,
+            'created_by' => Auth::user()->id,
+            'updated_by' => Auth::user()->id,
+            'deleted_by' => null,
+        ]);
+        return Response::json($data);
+    }
+
+    public function get_dashboards()
+    {
+
+        // get param id 
+        $id = Request::route('id');
+        if ($id) {
+            $dashboards = Dashboards::where('id', '=', $id)->get();
+            if (!$dashboards) {
+                return Response::json([
+                    'error' => 'dashboard not found',
+                ], 404);
+            }
+
+            return Response::json($dashboards[0]);
+        }
+        $dashboards = Dashboards::all();
+        return Response::json($dashboards);
+    }
+
+    public function updateDashboard()
+    {
+        $data = \json_decode(file_get_contents('php://input'));
+        $id = Request::route('id');
+
+        if (!$id) {
+            return Response::json([
+                'error' => 'id is required',
+            ], 400);
+        }
+
+        if(isset($data->image)){
+            // save to public folder
+            $image = $data->image;
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'dashboard_' . $id . '.png';
+            \File::put(public_path() . '/img/' . $imageName, base64_decode($image));
+            return Response::json([
+                'image' => $imageName,
+            ]);
+        }
+
+        $toUpdate = [];
+        if (isset($data->name)) {
+            $toUpdate['name'] = $data->name;
+        }
+
+        if (isset($data->elements)) {
+            $toUpdate['elements'] = json_encode($data->elements);
+        }
+
+        if (isset($data->enabled)) {
+            $toUpdate['enabled'] = $data->enabled;
+        }
+
+        if (isset($data->deleted)) {
+            $toUpdate['deleted'] = $data->deleted;
+        }
+
+        $dashboard = Dashboards::where('id', '=', $id)->first();
+        if (!$dashboard) {
+            return Response::json([
+                'error' => 'dashboard not found',
+            ], 404);
+        }
+
+        if(empty($toUpdate)){
+            return Response::json([
+                'error' => 'no fields to update',
+            ], 400);
+        }
+
+        $dashboard->update($toUpdate);
+
+        return Response::json($data);
+    }
+
     public function getCustomers()
     {
         $customers = Customer::all();

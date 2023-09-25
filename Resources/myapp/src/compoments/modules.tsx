@@ -37,7 +37,7 @@ export const Modules: Tmodule[] = [
         )
     },
     {
-        id: 'openTicketsOverview',
+        id: 'OpenTicketsBreakdown',
         rows: 3,
         columns: 29,
         item: (

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '-': ^0.0.1
+  '@ant-design/icons': ^5.2.6
   '@ant-design/plots': ^1.2.5
   '@dnd-kit/core': ^6.0.8
   '@dnd-kit/modifiers': ^6.0.1
@@ -55,6 +56,7 @@ specifiers:
   react-responsive: ^9.0.2
   react-rnd: ^10.4.1
   react-router-dom: ^6.16.0
+  react-router-native: ^6.16.0
   react-timeago: ^7.2.0
   react-visual-grid: ^0.9.5
   reactour: ^1.19.0
@@ -64,11 +66,14 @@ specifiers:
   tailwind-datepicker-react: ^1.4.2
   typed-scss-modules: ^7.1.4
   typescript: ^5.2.2
+  use-screenshot: ^0.1.1
+  use-screenshot-react-hook: ^1.1.0
   vite: ^4.4.9
   vite-plugin-checker: ^0.5.6
 
 dependencies:
   '-': 0.0.1
+  '@ant-design/icons': 5.2.6_biqbaboplfbrettd7655fr4n2y
   '@ant-design/plots': 1.2.5_biqbaboplfbrettd7655fr4n2y
   '@dnd-kit/core': 6.0.8_biqbaboplfbrettd7655fr4n2y
   '@dnd-kit/modifiers': 6.0.1_52scne4zmdeyjh2otzkgz2xfvu
@@ -101,10 +106,13 @@ dependencies:
   react-responsive: 9.0.2_react@18.2.0
   react-rnd: 10.4.1_biqbaboplfbrettd7655fr4n2y
   react-router-dom: 6.16.0_biqbaboplfbrettd7655fr4n2y
+  react-router-native: 6.16.0_react@18.2.0
   react-timeago: 7.2.0_react@18.2.0
   react-visual-grid: 0.9.5_biqbaboplfbrettd7655fr4n2y
   reactour: 1.19.1_fjmrpq3v2qdkhzuktnztzl7sru
   tailwind-datepicker-react: 1.4.2_biqbaboplfbrettd7655fr4n2y
+  use-screenshot: 0.1.1
+  use-screenshot-react-hook: 1.1.0
 
 devDependencies:
   '@nabla/vite-plugin-eslint': 1.5.0_eslint@8.49.0+vite@4.4.9
@@ -4767,6 +4775,10 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
+  /@ungap/url-search-params/0.2.2:
+    resolution: {integrity: sha512-qQsguKXZVKdCixOHX9jqnX/K/1HekPDpGKyEcXHT+zR6EjGA7S4boSuelL4uuPv6YfhN0n8c4UxW+v/Z3gM2iw==}
+    dev: false
+
   /@vitejs/plugin-react/4.0.4_vite@4.4.9:
     resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -4781,6 +4793,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@xata.io/screenshot/1.0.0:
+    resolution: {integrity: sha512-d8uN4AbwCz/U5Kn37clAiW2j7UTXXBRsfAZp/KyxnnqG8OYfSc3wOH4TR8KJA83my7zVxMvKwhJUIOYh8q1WPg==}
+    dev: false
 
   /acorn-jsx/5.3.2_acorn@8.10.0:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -5154,6 +5170,11 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
+  /base64-arraybuffer/1.0.2:
+    resolution: {integrity: sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==}
+    engines: {node: '>= 0.6.0'}
+    dev: false
+
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
@@ -5459,6 +5480,12 @@ packages:
     resolution: {integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==}
     engines: {node: '>=4'}
     dev: true
+
+  /css-line-break/2.1.0:
+    resolution: {integrity: sha512-FHcKFCZcAha3LwfVBhCQbW2nCNbkZXn7KVUJcsT5/P8YmfsVja0FMPJr0B903j/E69HUphKiV9iQArX8SDYA4w==}
+    dependencies:
+      utrie: 1.0.2
+    dev: false
 
   /css-mediaquery/0.1.2:
     resolution: {integrity: sha512-COtn4EROW5dBGlE/4PiKnh6rZpAPxDeFLaEEwt4i10jpDMFt2EhQGS79QmmrO+iKCHv0PU/HrOWEhijFd1x99Q==}
@@ -6876,6 +6903,14 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
+
+  /html2canvas/1.4.1:
+    resolution: {integrity: sha512-fPU6BHNpsyIhr8yyMpTLLxAbkaK8ArIBcmZIRiBLiDhjeqvXolaEmDGmELFuX9I4xDcaKKcJl+TKZLqruBbmWA==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      css-line-break: 2.1.0
+      text-segmentation: 1.0.3
     dev: false
 
   /hyphenate-style-name/1.0.4:
@@ -8342,7 +8377,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-    dev: true
 
   /react-draggable/4.4.5_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==}
@@ -8472,6 +8506,18 @@ packages:
       react-router: 6.16.0_react@18.2.0
     dev: false
 
+  /react-router-native/6.16.0_react@18.2.0:
+    resolution: {integrity: sha512-aTPGTTSGRs1bUzzLc+9DKBZNZqjjFLnDYWxWIti1tYQLWXecGmooZLLyDgoGZZ7FKOJO+ATeyi1Wa2WS3b8l0g==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
+      react-native: '>=0.44'
+    dependencies:
+      '@ungap/url-search-params': 0.2.2
+      react: 18.2.0
+      react-router: 6.16.0_react@18.2.0
+    dev: false
+
   /react-router/6.16.0_react@18.2.0:
     resolution: {integrity: sha512-VT4Mmc4jj5YyjpOi5jOf0I+TYzGpvzERy4ckNSvSh2RArv8LLoCxlsZ2D+tc7zgjxcY34oTz2hZaeX5RVprKqA==}
     engines: {node: '>=14.0.0'}
@@ -8521,7 +8567,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: true
 
   /reactour/1.19.1_fjmrpq3v2qdkhzuktnztzl7sru:
     resolution: {integrity: sha512-Y6MYZeNsnPQhUxV9U3dw6CU8qWjqOTlTTs64VsEHRXhrePV4+FZEASbiukf3TPC5PmabaF308VkT5hv9SVJNng==}
@@ -8784,7 +8829,6 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
-    dev: true
 
   /scroll-into-view-if-needed/3.1.0:
     resolution: {integrity: sha512-49oNpRjWRvnU8NyGVmUaYG4jtTkNonFZI86MmGRDqBphEK2EXT9gdEUoQPZhuBM8yWHxCWbobltqYO5M4XrUvQ==}
@@ -9127,6 +9171,12 @@ packages:
       string.prototype.trim: 1.2.8
     dev: false
 
+  /text-segmentation/1.0.3:
+    resolution: {integrity: sha512-iOiPUo/BGnZ6+54OsWxZidGCsdU8YbE4PSpdPinp7DeMtUJNJBoJ/ouUSTJjHkh1KntHaltHl/gDs2FC4i5+Nw==}
+    dependencies:
+      utrie: 1.0.2
+    dev: false
+
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
@@ -9402,6 +9452,22 @@ packages:
       react: 18.2.0
     dev: false
 
+  /use-screenshot-react-hook/1.1.0:
+    resolution: {integrity: sha512-0CkmLfKKtgMksPbRtc7+BhaXWUAoA+UEhK19EHMQ9m0QkPxjQKwzAsSYY8Plbq3wwms9PraQ8HaOGQZEshy5RQ==}
+    dependencies:
+      html2canvas: 1.4.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /use-screenshot/0.1.1:
+    resolution: {integrity: sha512-PPVcetDd6w02dEj5NtnUedy6uMpy+xCw7BA8rU7sAvJ4IX/ZU1zDpQjyjFdOcKvd4ftS0Y7E5u8irJboEUMKmA==}
+    peerDependencies:
+      vue: '>=3.2.0'
+    dependencies:
+      '@xata.io/screenshot': 1.0.0
+    dev: false
+
   /use-sidecar/1.1.2_dpmmhqj3uzrk25jjzo7arvivk4:
     resolution: {integrity: sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==}
     engines: {node: '>=10'}
@@ -9416,6 +9482,12 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.2
+    dev: false
+
+  /utrie/1.0.2:
+    resolution: {integrity: sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==}
+    dependencies:
+      base64-arraybuffer: 1.0.2
     dev: false
 
   /vite-plugin-checker/0.5.6_janxxrpnjw6mfv2v2cxqc7zmpa:

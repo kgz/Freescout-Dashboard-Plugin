@@ -1,16 +1,24 @@
-# (WIP) Response Reporting for Freescout.
-- Intuitive Response time reports for freescout.
+# (WIP) Intuitive Dashboard and reporting Module for Freescout.
+### why?
+Sodium is a modern, easy-to-use software library for encryption, decryption, signatures, password hashing, and more.
 
-TODO:  
-[ ] - single user report  
-[ ] - user filters on dashboard  
-[ ] - tidy up dashboard filters  
-[ ] - move react app outside package/build  
-[ ] - dump to excell  
-[ ] - add notification if response pending is greater then x  
-[ ] - setting to change if only admins can see.  
-[ ] - settings to change health values.  
-[ ] - Response health key -> add keys for the actualy resposse times. 
+It is a portable, cross-compilable, installable, and packageable fork of [NaCl](http://nacl.cr.yp.to/), with a compatible but extended API to improve usability even further
 
-Future:  
-[ ] - bookmarks module?  
+
+### Installation
+Sodium is cross-platform and cross-language. It runs on many compilers and operating systems, including 
+```Bash
+git clone https://doc.libsodium.org
+```
+
+### TODO
+
+ - [ ] Better Filtering
+	 - [ ] customers
+	 - [ ] responder
+ - [ ] auto refresh
+ - [ ] settings for thresholds
+ - [ ] create from other dashboard
+ - [ ] tidy up the look to the Home and current pages
+	 - [ ] Idea: maybe show the last 5 (or what will fit on screen) selected dashboards there to?
+ - [ ] create and remove elements to be put in a drawer with previews and categorization

@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "-": "^0.0.1",
+    "@ant-design/icons": "^5.2.6",
     "@ant-design/plots": "^1.2.5",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/modifiers": "^6.0.1",
@@ -49,10 +50,13 @@
     "react-responsive": "^9.0.2",
     "react-rnd": "^10.4.1",
     "react-router-dom": "^6.16.0",
+    "react-router-native": "^6.16.0",
     "react-timeago": "^7.2.0",
     "react-visual-grid": "^0.9.5",
     "reactour": "^1.19.0",
-    "tailwind-datepicker-react": "^1.4.2"
+    "tailwind-datepicker-react": "^1.4.2",
+    "use-screenshot": "^0.1.1",
+    "use-screenshot-react-hook": "^1.1.0"
   },
   "devDependencies": {
     "@nabla/vite-plugin-eslint": "^1.5.0",
