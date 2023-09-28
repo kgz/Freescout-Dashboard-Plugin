@@ -24,3 +24,4 @@
 /app/Config/database.php
 /vendors/*
 Resources/myapp/.pnpm-debug.log
+/Resources/myapp copy
