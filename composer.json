@@ -1,0 +1,27 @@
+{
+    "name": "freescout/ReportsModule",
+    "description": "",
+    "authors": [
+      {
+        "name": "LJPc solutions",
+        "email": "info@ljpc.nl"
+      }
+    ],
+    "extra": {
+      "laravel": {
+        "providers": [
+          "Modules\\ReportsModule\\Providers\\ReportsModuleServiceProvider"
+        ],
+        "aliases": {
+        }
+      }
+    },
+    "autoload": {
+      "psr-4": {
+        "Modules\\ReportsModule\\": ""
+      }
+    },
+    "require": {
+      "ext-json": "*"
+    }
+  }
