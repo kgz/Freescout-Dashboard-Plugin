@@ -1,0 +1,9 @@
+@use "root" as root;
+
+$colors: root.$colorPallet;
+
+:export {
+    @each $name, $color in $colors {
+        #{$name}: $color;
+    }
+}
