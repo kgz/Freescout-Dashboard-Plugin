@@ -1,11 +1,11 @@
 import PlusOutlined from '@ant-design/icons/lib/icons/PlusOutlined';
-import { containerClasses } from '@mui/material';
 import { Button, Drawer, FloatButton, Form, Image, Input, Spin, Tag, Tooltip } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import style from '../@styles/dashboard.module.scss'
 import { IDashboard, IDashboardRaw } from '../@types/dashboard';
+import Header from './Header';
 
 const Dashboard = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -40,7 +40,7 @@ const Dashboard = () => {
         }
     }, [needsUpdate])
 
-    const onFinish = (values: any) => {
+    const onFinish = (values: object) => {
         setPendingCreate(true)
         const controller = new AbortController()
         const signal = controller.signal
@@ -55,7 +55,7 @@ const Dashboard = () => {
             body: JSON.stringify(values)
         })
             .then(response => response.json())
-            .then(data => {
+            .then(() => {
                 setDrawerOpen(false)
                 setNeedsUpdate((ld) => ld + 1)
             })
@@ -83,10 +83,12 @@ const Dashboard = () => {
 
     const cahceTime = useMemo(() => {
         return Date.now()
-    }, [needsUpdate])
+    }, [])
 
     return (
         <>
+            <Header />
+
             <div className={style.main} style ={
                 loading ? {
                     justifyContent:'center',
@@ -140,7 +142,7 @@ const Dashboard = () => {
                                             }
                                         </>
                                         {
-                                            element?.elements && element?.elements?.map((module: any, key) => {
+                                            element?.elements && element?.elements?.map((module, key) => {
                                                 return (
                                                     <div key={key}>
 
@@ -175,33 +177,14 @@ const Dashboard = () => {
                     initialValues={{ remember: true }}
                     layout='vertical'
                     onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
                     <Form.Item
                         label={<>Dashboard&nbsp;Name:</>}
                         name="name"
-                    // rules={[{ required: true, message: 'Please input your username!' }]}
                     >
                         <Input />
                     </Form.Item>
-
-                    {/* <Form.Item
-                        label="Password"
-                        name="password"
-                        rules={[{ required: true, message: 'Please input your password!' }]}
-                    >
-                        <Input.Password />
-                    </Form.Item> */}
-
-                    {/* <Form.Item
-                        name="remember"
-                        valuePropName="checked"
-                        wrapperCol={{ offset: 8, span: 16 }}
-                    >
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item> */}
-
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Button type="primary" htmlType="submit" loading={pendingCreate}>
                             Submit

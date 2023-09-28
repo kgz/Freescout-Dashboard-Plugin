@@ -1,9 +1,7 @@
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { Dropdown, Empty, Menu, MenuProps, Spin } from "antd";
-import { ItemType } from "antd/es/menu/hooks/useItems";
+import { Empty, Menu, MenuProps, Spin } from "antd";
 import pLimit from "p-limit"
-import { createRef, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useMediaQuery } from "react-responsive";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useParams } from "react-router-dom";
 import { useScreenshot } from "use-screenshot-react-hook";
 
@@ -14,16 +12,17 @@ import { Tmodule } from "../@types/module";
 import { ISelectedDates } from "../@types/stores"
 import { State } from "../@types/storeState"
 import { Masonry } from "../compoments/Grid";
-import { Modules } from "../compoments/modules";
 import Header from "../compoments/Header";
+import { Modules } from "../compoments/modules";
 
 const Index = () => {
     const [loading, setLoading] = useState(false);
     const [selectedWidgets, setSelectedWidgets] = useState<IDashboard['elements']>([]);
     const useSelectedDates = useAppSelector((state: RootState) => state.selectedDates as State<ISelectedDates>)
+    const useSelectedInterval = useAppSelector((state: RootState) => state.selectedInterval as State<number>)
     const dispatch = useAppDispatch();
     const { dashboardId } = useParams<{ dashboardId: string }>()
-    const [updateWidths, setUpdateWidths] = useState(0)
+    const [dashboardName, setDashboardName] = useState('' as string)
     const { image, takeScreenShot } = useScreenshot({
         // we only want small images
         quality: 0.1,
@@ -32,9 +31,10 @@ const Index = () => {
         // size of the image
     })
     const ref = useRef(null)
+    const [updateDashboard, setUpdateDashboard] = useState(0)
 
 
-    const updateSelections = (data: IDashboard['elements']) => {
+    const updateSelections = useCallback((data: IDashboard['elements']) => {
         if (typeof data !== 'object') {
             throw new Error('data is not an object')
         }
@@ -59,7 +59,7 @@ const Index = () => {
             })
             .finally(() => {
             });
-    }
+    }, [dashboardId, takeScreenShot])
 
 
     useEffect(() => {
@@ -77,6 +77,7 @@ const Index = () => {
             .then(response => response.json())
             .then(data => {
                 setSelectedWidgets(JSON.parse(data.elements))
+                setDashboardName(data.name)
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -139,7 +140,7 @@ const Index = () => {
         return () => {
             controller.abort()
         }
-    }, [useSelectedDates.data.startDate, useSelectedDates.data.endDate, dispatch])
+    }, [useSelectedDates.data.startDate, useSelectedDates.data.endDate, dispatch, updateDashboard])
 
 
     useEffect(() => {
@@ -188,7 +189,7 @@ const Index = () => {
         return () => {
             controller.abort()
         }
-    }, [useSelectedDates.data.startDate, useSelectedDates.data.endDate, dispatch])
+    }, [useSelectedDates.data.startDate, useSelectedDates.data.endDate, dispatch, updateDashboard])
 
     useEffect(() => {
         dispatch(setClosedTicketsLoading(true))
@@ -209,34 +210,34 @@ const Index = () => {
         return () => {
             controller.abort()
         }
-    }, [dispatch])
+    }, [dispatch, updateDashboard])
 
-    const widths: { [key: number]: number } = {
-        500: 1,
-        750: 30,
-        1000: 50,
-        1250: 60,
-        1500: 70,
-        1750: 90,
-        2000: 90,
-        2250: 100,
-        2500: 110,
-        2750: 120,
-        3000: 130,
-        3250: 140,
-        3500: 150,
-        3750: 160,
-        4000: 170,
-        4250: 180,
-        4500: 190,
-
-
-    }
+    const widths: { [key: number]: number } = useMemo(() => {
+        return {
+            500: 1,
+            750: 30,
+            1000: 50,
+            1250: 60,
+            1500: 70,
+            1750: 90,
+            2000: 90,
+            2250: 100,
+            2500: 110,
+            2750: 120,
+            3000: 130,
+            3250: 140,
+            3500: 150,
+            3750: 160,
+            4000: 170,
+            4250: 180,
+            4500: 190,
+        }
+    }, [])
 
     const columns = useMemo(() => {
         let min = 0
-        for (const [value, i] of Object.entries(widths)) {
-            let max: number = parseInt(value)
+        for (const [value] of Object.entries(widths)) {
+            const max: number = parseInt(value)
             if (window.innerWidth >= min && window.innerWidth < max) {
                 return widths[min]
             }
@@ -245,19 +246,7 @@ const Index = () => {
         }
 
         return widths[min]
-    }, [widths, updateWidths])
-
-    // add a resize listener
-    useEffect(() => {
-        const handleResize = () => {
-
-            setUpdateWidths((uw) => uw + 1)
-        }
-        window.addEventListener('resize', handleResize)
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
+    }, [widths])
 
     const modulesToRender: Tmodule[] = useMemo(() => {
         return Modules.filter((module) => {
@@ -309,16 +298,22 @@ const Index = () => {
             icon: <MinusOutlined />,
             children: remove
         }]
-    }, [Modules, setSelectedWidgets, selectedWidgets, updateSelections])
+    }, [setSelectedWidgets, selectedWidgets, updateSelections])
 
     useEffect(() => {
-        console.log(columns)
-    }, [columns])
+        console.log({ useSelectedInterval })
+        if (!useSelectedInterval.data) {
+            return
+        }
+        const timeout = setInterval(() => {
+            setUpdateDashboard((ud) => ud + 1)
+        }, useSelectedInterval.data * 1000)
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [useSelectedInterval])
 
     useEffect(() => {
-
-        // if image is not null, then open a new window with the image as blob
-        console.log({ image })
         if (image) {
             // send to update
             fetch(`http://freescout.example.com/responses/api/dashboards/${dashboardId}/update`, {
@@ -344,16 +339,16 @@ const Index = () => {
                 })
         }
 
-    }, [image])
+    }, [dashboardId, image])
 
     return (
         <>
-            <Header />
-            <Menu mode="horizontal" items={items} style={{ width: 300, float: 'left', marginTop: -30 }} />
+            <Header name={dashboardName}/>
+            <Menu mode="horizontal" items={items} style={{ width: 300, float: 'left' }} />
 
             <div className={style.main} ref={ref}>
                 {loading && <Spin />}
-                {!modulesToRender.length && !loading && <Empty style={{margin: '30 auto'}} description={'No Modules Selected'}/>}
+                {!modulesToRender.length && !loading && <Empty style={{ margin: '30 auto' }} description={'No Modules Selected'} />}
                 {!loading && <Masonry columns={columns} items={
                     modulesToRender.map((module: Tmodule) => {
                         // wrap the module.item in a div with the correct size

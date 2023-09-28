@@ -181,10 +181,6 @@ const OpenTicketsBreakdown = () => {
                             }
                         }}
 
-                        // renderDetailPanel={({ table }) => [
-                        //     <>asdasd</>
-                        // ]}
-
                         muiTableProps={{
                             sx: {
                                 '& .MuiTableHead-root': {
