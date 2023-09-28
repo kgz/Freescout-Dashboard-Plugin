@@ -39,7 +39,7 @@ const Index = () => {
             throw new Error('data is not an object')
         }
         ref.current && takeScreenShot(ref.current)
-        fetch(`http://freescout.example.com/responses/api/dashboards/${dashboardId}/update`, {
+        fetch(`/responses/api/dashboards/${dashboardId}/update`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const Index = () => {
         setLoading(true)
         const controller = new AbortController()
         const signal = controller.signal
-        fetch('http://freescout.example.com/responses/api/dashboards/' + dashboardId, {
+        fetch('/responses/api/dashboards/' + dashboardId, {
             method: 'GET',
             signal: signal,
         })
@@ -102,14 +102,14 @@ const Index = () => {
         const signal = controller.signal
         dispatch(setResponseTimesLoading(true))
         dispatch(resetResponseTimes())
-        fetch('http://freescout.example.com/responses/api/response_times' + '?' + urlParams.toString(), {
+        fetch('/responses/api/response_times' + '?' + urlParams.toString(), {
             method: 'GET',
             signal: signal,
         })
             .then(response => response.json())
             .then(data => {
                 const pages = data.total_pages
-                //http://freescout.example.com/responses/api/response_times
+                ///responses/api/response_times
                 // run with p-limit
                 const limit = 5;
                 const limit2 = pLimit(limit);
@@ -121,7 +121,7 @@ const Index = () => {
                         start: useSelectedDates.data.startDate.toString(),
                         end: useSelectedDates.data.endDate.toString(),
                     })
-                    const response = await fetch('http://freescout.example.com/responses/api/response_times' + '?' + urlParams.toString(), {
+                    const response = await fetch('/responses/api/response_times' + '?' + urlParams.toString(), {
                         method: 'GET',
                         signal: signal,
                     })
@@ -152,14 +152,14 @@ const Index = () => {
         const signal = controller.signal
         dispatch(setOpenTicketsLoading(true))
         dispatch(resetOpenTickets())
-        fetch('http://freescout.example.com/responses/api/outstanding_resposes' + '?' + urlParams.toString(), {
+        fetch('/responses/api/outstanding_resposes' + '?' + urlParams.toString(), {
             method: 'GET',
             signal: signal,
         })
             .then(response => response.json())
             .then(data => {
                 const pages = data.total_pages
-                //http://freescout.example.com/responses/api/response_times
+                ///responses/api/response_times
                 // run with p-limit
                 const limit = 5;
                 const limit2 = pLimit(limit);
@@ -170,7 +170,7 @@ const Index = () => {
                         page: page.toString(),
                         end: useSelectedDates.data.endDate.toString(),
                     })
-                    const response = await fetch('http://freescout.example.com/responses/api/outstanding_resposes' + '?' + urlParams.toString(), {
+                    const response = await fetch('/responses/api/outstanding_resposes' + '?' + urlParams.toString(), {
                         method: 'GET',
                         signal: signal,
                     })
@@ -195,7 +195,7 @@ const Index = () => {
         dispatch(setClosedTicketsLoading(true))
         const controller = new AbortController()
         const signal = controller.signal
-        fetch('http://freescout.example.com/responses/api/closed_responses', {
+        fetch('/responses/api/closed_responses', {
             method: 'GET',
             signal: signal,
         })
@@ -316,7 +316,7 @@ const Index = () => {
     useEffect(() => {
         if (image) {
             // send to update
-            fetch(`http://freescout.example.com/responses/api/dashboards/${dashboardId}/update`, {
+            fetch(`/responses/api/dashboards/${dashboardId}/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

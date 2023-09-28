@@ -18,7 +18,7 @@ const Dashboard = () => {
         setLoading(true)
         const abortController = new AbortController()
         const signal = abortController.signal
-        fetch('http://freescout.example.com/responses/api/dashboards', {
+        fetch('/responses/api/dashboards', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const Dashboard = () => {
         setPendingCreate(true)
         const controller = new AbortController()
         const signal = controller.signal
-        fetch('http://freescout.example.com/responses/api/create_dashboard', {
+        fetch('/responses/api/create_dashboard', {
             method: 'POST',
             signal: signal,
             headers: {
