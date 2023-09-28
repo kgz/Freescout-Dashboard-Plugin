@@ -5,9 +5,9 @@
 
 
 ### Installation
-Sodium is cross-platform and cross-language. It runs on many compilers and operating systems, including 
+Simple git pull int the Modules folder in youre freescout App
 ```Bash
-git clone https://doc.libsodium.org
+git clone https://github.com/kgz/Freescout-Dashboard-Plugin
 ```
 
 ### TODO
